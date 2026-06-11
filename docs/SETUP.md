@@ -11,10 +11,12 @@ npm run dev
 Điền 3 biến trong `.env.local`:
 
 ```bash
-VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
+VITE_CLOUDINARY_CLOUD_NAME=dobqkiosx
 VITE_CLOUDINARY_UPLOAD_PRESET=luc_giac_unsigned_preset
 VITE_GOOGLE_APPS_SCRIPT_URL=https://script.google.com/macros/s/your_deployment_id/exec
 ```
+
+Với cấu hình local hiện tại, file `.env.local` đã được tạo sẵn với `VITE_CLOUDINARY_CLOUD_NAME=dobqkiosx`. Bạn chỉ cần tạo unsigned upload preset đúng tên `luc_giac_unsigned_preset` trong Cloudinary và thay URL Google Apps Script sau khi deploy Web App.
 
 ## 2. Tạo Cloudinary unsigned upload preset
 
@@ -26,7 +28,9 @@ VITE_GOOGLE_APPS_SCRIPT_URL=https://script.google.com/macros/s/your_deployment_i
 6. Giới hạn dung lượng upload ở preset nếu tài khoản/plan cho phép. Frontend cũng đang chặn mỗi ảnh tối đa 10MB.
 7. Lưu preset name và đưa vào `VITE_CLOUDINARY_UPLOAD_PRESET`.
 
-Không đưa API key hoặc API secret Cloudinary vào frontend.
+Không đưa API key hoặc API secret Cloudinary vào frontend. MVP này upload bằng unsigned upload preset, nên frontend chỉ cần `Cloud name` và `Upload preset`.
+
+Nếu đã lỡ chia sẻ API Secret ở nơi công khai, hãy vào Cloudinary Dashboard để rotate secret trước khi chạy thật.
 
 ## 3. Tạo Google Sheet
 
@@ -42,6 +46,8 @@ Copy Sheet ID từ URL:
 ```text
 https://docs.google.com/spreadsheets/d/SHEET_ID/edit
 ```
+
+Ví dụ URL `https://docs.google.com/spreadsheets/d/1FppeUT2axHJUtRbK207AYxcCXgDYkX2MCXXqHx4v92g/edit` thì Sheet ID là `1FppeUT2axHJUtRbK207AYxcCXgDYkX2MCXXqHx4v92g`.
 
 ## 4. Tạo Google Apps Script Web App
 

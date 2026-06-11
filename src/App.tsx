@@ -90,7 +90,7 @@ function makeId() {
 }
 
 function getAppsScriptEndpoint() {
-  return import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL as string | undefined
+  return (import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL as string | undefined)?.trim()
 }
 
 async function submitOrder(payload: unknown) {
@@ -100,13 +100,22 @@ async function submitOrder(payload: unknown) {
     throw new Error('Thiếu VITE_GOOGLE_APPS_SCRIPT_URL trong biến môi trường.')
   }
 
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'text/plain;charset=utf-8',
-    },
-    body: JSON.stringify(payload),
-  })
+  let response: Response
+
+  try {
+    response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      },
+      body: JSON.stringify(payload),
+    })
+  } catch (error) {
+    throw new Error(
+      'Khong goi duoc Google Apps Script. Kiem tra Web App da deploy quyen "Anyone", dung URL /exec moi nhat va khoi dong lai Vite sau khi sua .env.local.',
+      { cause: error },
+    )
+  }
   const text = await response.text()
   let data: { ok?: boolean; message?: string }
 
@@ -116,7 +125,12 @@ async function submitOrder(payload: unknown) {
     data = {}
   }
 
-  if (!response.ok || data.ok === false) {
+  if (!response.ok || data.ok !== true) {
+    if (!data.message) {
+      throw new Error(
+        'Google Apps Script khong tra ve JSON hop le. Neu URL mo ra trang dang nhap Google, hay deploy Web App voi quyen "Anyone".',
+      )
+    }
     throw new Error(data.message || 'Không gửi được đơn hàng. Vui lòng thử lại.')
   }
 

@@ -182,6 +182,13 @@ function isValidCloudinaryImageUrl_(url) {
   return /^https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\//.test(value);
 }
 
+function normalizeSpreadsheetId_(value) {
+  const input = String(value || '').trim();
+  const match = input.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+
+  return match ? match[1] : input;
+}
+
 function getSpreadsheet_() {
   if (!SPREADSHEET_ID || SPREADSHEET_ID === 'PASTE_GOOGLE_SHEET_ID_HERE') {
     const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -191,7 +198,7 @@ function getSpreadsheet_() {
     return activeSpreadsheet;
   }
 
-  return SpreadsheetApp.openById(SPREADSHEET_ID);
+  return SpreadsheetApp.openById(normalizeSpreadsheetId_(SPREADSHEET_ID));
 }
 
 function getSheet_(spreadsheet) {
