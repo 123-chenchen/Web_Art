@@ -1,4 +1,4 @@
-export const MAX_IMAGES = 20
+export const MAX_IMAGES = 21
 export const SINGLE_PRICE = 99_000
 
 export type PriceOption = {
@@ -65,14 +65,15 @@ export const PRICE_OPTIONS: PriceOption[] = [
     featured: true,
     note: 'Hiệu ứng gallery rõ nét',
   },
+
   {
-    size: 20,
-    label: 'Combo 20 tấm',
-    price: 1_800_000,
-    badge: 'Full wall',
+    size: 21,
+    label: 'Combo 21 tấm',
+    price: 1_890_000,
+    badge: 'Mới nhất',
     featured: true,
-    note: 'Một mảng decor trọn vẹn',
-  },
+    note: 'Tối ưu cho không gian lớn',
+  }
 ]
 
 const BUYABLE_OPTIONS = PRICE_OPTIONS.map((option) => ({
